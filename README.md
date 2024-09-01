@@ -19,7 +19,7 @@ A simple DNS-over-HTTPS (DoH) proxy server written in Go. This tool acts as an i
 
 1. Clone this repository:
     ```sh
-    git clone https://github.com/yourusername/doh-proxy.git
+    git clone https://git.olympuslab.net/afonso/doh-proxy
     cd doh-proxy
     ```
 
