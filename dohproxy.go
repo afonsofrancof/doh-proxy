@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"crypto/tls"
 	"flag"
 	"io"
 	"log"
@@ -15,31 +14,26 @@ import (
 	"golang.org/x/net/http2"
 )
 
-// ProtocolType represents the type of DNS protocol
-type ProtocolType int
-
 const (
 	// Enum-like constants for ProtocolType
-	TCP ProtocolType = iota
+	TCP int = iota
 	UDP
 )
 
 // DoHProxy represents the DNS-over-HTTPS proxy
 type DoHProxy struct {
-	listenAddress string
-	port          string
-	upstreamURLs  []string
-	client        *http.Client
-	protocols     []ProtocolType // List of protocols to listen on
-	logRequests   bool
+	listenAddress string       // Address to listen for DNS queries on
+	port          string       // Port to listen for DNS queries on
+	upstreamURLs  []string     // Upstream DoH server URLs
+	protocols     []int        // List of protocols to listen on
+	client        *http.Client //Http client that makes the requests to the upstream servers
+	logRequests   bool         // Flag that enables logging
 }
 
 // NewDoHProxy initializes a new DoHProxy instance
-func NewDoHProxy(listenAddress, port string, upstreamURLs []string, protocols []ProtocolType, logRequests bool) *DoHProxy {
+func NewDoHProxy(listenAddress, port string, upstreamURLs []string, protocols []int, logRequests bool) *DoHProxy {
 	// HTTP client with support for HTTP/2
-	transport := &http.Transport{
-		TLSClientConfig: &tls.Config{},
-	}
+	transport := &http.Transport{}
 
 	http2.ConfigureTransport(transport) // Enable HTTP/2 support
 
@@ -186,7 +180,7 @@ WARNING:
 	}
 
 	// Determine which protocols to use
-	var protocols []ProtocolType
+	var protocols []int
 	if *tcpFlag {
 		protocols = append(protocols, TCP)
 	}
@@ -195,7 +189,7 @@ WARNING:
 	}
 	if !*tcpFlag && !*udpFlag {
 		// Default to both if no specific flag is provided
-		protocols = []ProtocolType{TCP, UDP}
+		protocols = []int{TCP, UDP}
 	}
 	if *logFlag {
 		log.Println("Logging requests")
