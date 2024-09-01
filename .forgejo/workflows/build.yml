@@ -1,0 +1,29 @@
+name: Compile dohproxy
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21' # Replace with your desired Go version
+
+      - name: Compile Go binary
+        run: |
+          go build dohproxy.go
+          
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: go-binary
+          path: dohproxy
+
