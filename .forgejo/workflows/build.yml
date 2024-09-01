@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - '*'
+    paths:
+      - dohproxy.go
 
 jobs:
   build:
@@ -14,6 +16,8 @@ jobs:
 
       - name: Set up Go
         uses: actions/setup-go@v4
+        with:
+          go-version: '1.23'
 
       - name: Compile Go binary
         run: |
