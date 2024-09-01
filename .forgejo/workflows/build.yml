@@ -14,8 +14,6 @@ jobs:
 
       - name: Set up Go
         uses: actions/setup-go@v4
-        with:
-          go-version: '1.21' # Replace with your desired Go version
 
       - name: Compile Go binary
         run: |
@@ -24,6 +22,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: go-binary
+          name: dohproxy
           path: dohproxy
 
